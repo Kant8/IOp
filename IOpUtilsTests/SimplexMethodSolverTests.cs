@@ -12,7 +12,7 @@ namespace IOpUtils.Tests
     public class SimplexMethodSolverTests
     {
         [Test()]
-        public void SimplexMethodSolverTest()
+        public void SimplexMethodSolverTest0()
         {
             DenseMatrix A = DenseMatrix.OfArray(new double[,]
                                                 {
@@ -52,9 +52,22 @@ namespace IOpUtils.Tests
         }
 
         [Test()]
-        public void FirstPhaseOnlyTest()
+        public void SimplexMethodSolverTest2()
         {
+            DenseMatrix A = DenseMatrix.OfArray(new double[,]
+                                                {
+                                                    { 5, -1, 1, 0, 0 },
+                                                    { -1, 2, 0, 1, 0 },
+                                                    { -7, 2, 0, 0, 1 },
+                                                });
+            DenseVector b = new DenseVector(new double[] { 15, 6, 0 });
+            DenseVector c = new DenseVector(new double[] { 3.5, -1, 0, 0, 0 });
 
+            DenseVector expectedResult = new DenseVector(new double[] { 1, 3.5, 13.5, 0, 0 });
+
+            var sms = new SimplexMethodSolver(A, b, -c);
+            var actualResult = sms.Solve();
+            Assert.AreEqual(expectedResult, actualResult);
         }
 
         [Test()]

@@ -120,6 +120,8 @@ namespace IOpUtils
             {
                 Estimations[j] = U * A.Column(j) - c[j];
             }
+
+            Estimations = Estimations.Select(x => Math.Round(x, MeaningDecimals)).ToList();
         }
 
         private bool IsOptimal()

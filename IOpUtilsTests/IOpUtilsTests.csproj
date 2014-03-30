@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="BranchAndBoundMethodTests.cs" />
     <Compile Include="DuplexMethodSolverTests.cs" />
+    <Compile Include="DynamicMethodTests.cs" />
+    <Compile Include="GomoriMethodTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimplexMethodSolverTests.cs" />
   </ItemGroup>

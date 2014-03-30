@@ -18,7 +18,9 @@ namespace IOpUtils
         public DenseVector dUpper { get; set; }
 
         public List<int> IntegerJ { get; set; }
-        
+
+        public List<int> StartBaseJ { get; set; }
+        public DenseVector StartX { get; set; }
         public double StartRecord { get; set; }
 
         public DenseVector ResultX { get; set; }
@@ -29,6 +31,8 @@ namespace IOpUtils
         #endregion
 
         #region Private Properties
+
+        private bool IsFirstPhaseNeeded { get; set; }
 
         private Stack<BAndBTask> Tasks { get; set; }
 
@@ -57,6 +61,17 @@ namespace IOpUtils
             StartRecord = startRecord;
             MeaningDecimals = 8;
             HasResult = false;
+            IsFirstPhaseNeeded = true;
+        }
+
+        public BranchAndBoundMethod(DenseMatrix a, DenseVector b, DenseVector c,
+            DenseVector dLower, DenseVector dUpper, IEnumerable<int> integerJ,
+            double startRecord, DenseVector startX, IEnumerable<int> startBaseJ)
+            : this(a, b, c, dLower, dUpper, integerJ, startRecord)
+        {
+            StartBaseJ = new List<int>(startBaseJ);
+            StartX = DenseVector.OfVector(startX);
+            IsFirstPhaseNeeded = false;
         }
 
         #endregion
@@ -122,7 +137,7 @@ namespace IOpUtils
                     dms.Solve();
                     dms.RoundResult();
                 }
-                catch (ArithmeticException ex)
+                catch (ArithmeticException)
                 {
                     continue;
                 }
