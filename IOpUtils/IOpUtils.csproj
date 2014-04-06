@@ -37,6 +37,9 @@
     <Reference Include="MathNet.Numerics.IO">
       <HintPath>..\packages\MathNet.Numerics.2.6.2\lib\net40\MathNet.Numerics.IO.dll</HintPath>
     </Reference>
+    <Reference Include="NGenerics">
+      <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -51,6 +54,7 @@
     <Compile Include="DuplexMethodBoundsSolver.cs" />
     <Compile Include="DynamicMethod.cs" />
     <Compile Include="GomoriMethod.cs" />
+    <Compile Include="PotentialMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimplexMethodSolver.cs" />
   </ItemGroup>

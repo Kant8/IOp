@@ -38,6 +38,9 @@
     <Reference Include="MathNet.Numerics">
       <HintPath>..\..\MathNet\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="NGenerics">
+      <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -56,6 +59,7 @@
     <Compile Include="DuplexMethodSolverTests.cs" />
     <Compile Include="DynamicMethodTests.cs" />
     <Compile Include="GomoriMethodTests.cs" />
+    <Compile Include="PotentialMethodTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimplexMethodSolverTests.cs" />
   </ItemGroup>
