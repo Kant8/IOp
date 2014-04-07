@@ -206,16 +206,13 @@ namespace IOpUtils
                 wasRemoved = false;
                 foreach (var edge in loop)
                 {
-                    var from = edge.FromVertex;
-
-                    if (from.IncomingEdges().Count == 0)
+                    if (edge.FromVertex.BaseIncidentEdges(loop).Count == 1)
                     {
                         nextLoop.Remove(edge);
                         wasRemoved = true;
                     }
 
-                    var to = edge.ToVertex;
-                    if (to.EmanatingEdges.Count == 0)
+                    if (edge.ToVertex.BaseIncidentEdges(loop).Count == 1)
                     {
                         nextLoop.Remove(edge);
                         wasRemoved = true;
@@ -282,6 +279,11 @@ namespace IOpUtils
         public static IList<Edge<T>> BaseEmanatingEdges<T>(this Vertex<T> v, List<Edge<T>> baseU)
         {
             return v.EmanatingEdges.Where(baseU.Contains).ToList();
+        }
+
+        public static IList<Edge<T>> BaseIncidentEdges<T>(this Vertex<T> v, List<Edge<T>> baseU)
+        {
+            return v.IncidentEdges.Where(baseU.Contains).ToList();
         }
     }
 }
