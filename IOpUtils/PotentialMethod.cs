@@ -17,7 +17,9 @@ namespace IOpUtils
         public Dictionary<Edge<int>, double> StartX { get; set; }
         public Dictionary<Edge<int>, double> ResultX { get; set; }
         public double ResultCost { get; set; }
+        public List<Edge<int>> ResultBaseU { get; set; }
 
+        public List<int> Production { get; set; }
         public bool IsFirstPhaseNeeded { get; set; }
 
         #endregion
@@ -40,12 +42,13 @@ namespace IOpUtils
 
         #endregion
 
+        #region Constructors
 
-
-        public PotentialMethod(Graph<int> orientedGraph)
+        public PotentialMethod(Graph<int> orientedGraph, List<int> production)
         {
             S = orientedGraph;
 
+            Production = production;
             IsFirstPhaseNeeded = true;
         }
 
@@ -55,15 +58,22 @@ namespace IOpUtils
             StartX = startX;
             StartBaseU = baseU;
 
-            CurrX = StartX;
-            CurrBaseU = StartBaseU;
+            CurrX = new Dictionary<Edge<int>,double>(StartX);
+            CurrBaseU = new List<Edge<int>>(StartBaseU);
 
             IsFirstPhaseNeeded = false;
         }
 
+        #endregion Constructors
+
         public Dictionary<Edge<int>, double> Solve()
         {
             CheckRestictions();
+
+            if (IsFirstPhaseNeeded)
+            {
+                FirstPhase();
+            }
 
             while (true)
             {
@@ -73,6 +83,7 @@ namespace IOpUtils
                 {
                     ResultX = new Dictionary<Edge<int>, double>(CurrX);
                     ResultCost = ResultX.Sum(x => x.Key.Weight*x.Value);
+                    ResultBaseU = CurrBaseU;
                     return ResultX;
                 }
 
@@ -88,6 +99,97 @@ namespace IOpUtils
                 CalcNewPlan();
             }
         }
+
+        public void FirstPhase()
+        {
+            IsFirstPhaseNeeded = false;
+
+            if (Production.Sum() != 0)
+                throw new ArithmeticException("Production sum != 0. Problem has no flows");
+
+            var fakeGraph = S.Clone();
+            var fakeVertex = new Vertex<int>(S.Vertices.Count);
+            fakeGraph.AddVertex(fakeVertex);
+
+            foreach (var e in fakeGraph.Edges)
+            {
+                e.Weight = 0;
+            }
+
+            var fakeEdges = new List<Edge<int>>();
+            foreach (var v in fakeGraph.Vertices)
+            {
+                if (v == fakeVertex) continue;
+
+                var fakeEdge = Production[v.Data] > 0 ? new Edge<int>(v, fakeVertex, true) : new Edge<int>(fakeVertex, v, true);
+                fakeEdge.Weight = 1;
+                fakeEdges.Add(fakeEdge);
+                fakeGraph.AddEdge(fakeEdge);
+            }
+
+            var fakeStartX = fakeGraph.Edges.ToDictionary<Edge<int>, Edge<int>, double>(e => e, e => 0);
+            foreach (var fe in fakeEdges)
+            {
+                if (fe.FromVertex == fakeVertex)
+                    fakeStartX[fe] = -Production[fe.ToVertex.Data];
+                else
+                    fakeStartX[fe] = Production[fe.FromVertex.Data];
+            }
+
+            var fakePm = new PotentialMethod(fakeGraph, fakeStartX, new List<Edge<int>>(fakeEdges));
+            var resX = fakePm.Solve();
+            var resU = fakePm.ResultBaseU;
+
+
+            if (fakeEdges.Any(fe => resX[fe] != 0.0))
+            {
+                throw new ArithmeticException("Restrictions are not compatible. " +
+                                              "Problem has no flows");
+            }
+
+            StartX = new Dictionary<Edge<int>, double>();
+            StartBaseU = new List<Edge<int>>();
+
+            var realEdges = fakeGraph.Edges.Except(fakeEdges).ToList();
+            var startXFromFake = resX.Where(pair => realEdges.Contains(pair.Key)).ToDictionary(pair => pair.Key, pair => pair.Value);
+            foreach (var fakeX in startXFromFake)
+            {
+                StartX.Add(S.GetEdge(fakeX.Key.FromVertex.Data, fakeX.Key.ToVertex.Data), fakeX.Value);
+            }
+
+            while (true)
+            {
+                var edgesToDelete = resU.Intersect(fakeEdges).ToList();
+                if (edgesToDelete.Count == 1)
+                {
+                    var startBaseUFromFake = resU.Except(edgesToDelete).ToList();
+                    foreach (var fakeU in startBaseUFromFake)
+                    {
+                        StartBaseU.Add(S.GetEdge(fakeU.FromVertex.Data, fakeU.ToVertex.Data));
+                    }
+                    break;
+                }
+                foreach (var edge in realEdges.Except(resU))
+                {
+                    var loop = GetLoop(new List<Edge<int>>(resU) {edge});
+
+                    var fakeEdgesInLoop = loop.Intersect(fakeEdges).ToList();
+
+                    if (fakeEdgesInLoop.Count == 2)
+                    {
+                        resU.Remove(fakeEdgesInLoop.First());
+                        resU.Add(edge);
+                        break;
+                    }
+
+                }
+            }
+
+            CurrX = new Dictionary<Edge<int>,double>(StartX);
+            CurrBaseU = new List<Edge<int>>(StartBaseU);
+        }
+
+        #region Private Methods
 
         private void CheckRestictions()
         {
@@ -265,7 +367,11 @@ namespace IOpUtils
             CurrBaseU.Add(InoptimalEdge);
         }
 
-        public string PrintX(Dictionary<Edge<int>, double> x)
+        #endregion Private Methods
+
+        #region Helper Methods
+
+        public static string PrintX(Dictionary<Edge<int>, double> x)
         {
             var sb = new StringBuilder();
             foreach (var pair in x)
@@ -275,6 +381,122 @@ namespace IOpUtils
             }
             return sb.ToString();
         }
+
+        public static string PrintTree(List<Edge<int>> tree)
+        {
+            var sb = new StringBuilder();
+            foreach (var node in tree)
+            {
+                sb.AppendFormat("{0} -> {1}\n", node.FromVertex.Data + 1, node.ToVertex.Data + 1);
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Creates graph from template array
+        /// </summary>
+        /// <param name="data">row is one edge with format "from, to, cost"</param>
+        /// <remarks>indexing is started from 1</remarks>
+        /// <returns>oriented graph</returns>
+        public static Graph<int> CreateGraph(double[,] data)
+        {
+            var g = new Graph<int>(true);
+
+            var vs = new List<int>(data.GetLength(0)*2+1);
+            vs.Add(-1);
+            for (int i = 0; i < data.GetLength(0); i++)
+            {
+                vs.Add((int)data[i, 0] - 1);
+                vs.Add((int)data[i, 1] - 1);
+            }
+            vs = vs.Distinct().OrderBy(v => v).ToList();
+            foreach (var v in vs.Skip(1))
+            {
+                g.AddVertex(v);
+            }
+
+            for (int i = 0; i < data.GetLength(0); i++)
+            {
+                var from = g.GetVertex(vs[(int)data[i, 0]]);
+                var to = g.GetVertex(vs[(int)data[i, 1]]);
+                g.AddEdge(from, to, data[i, 2]);
+            }
+            return g;
+        }
+
+        /// <summary>
+        /// Creates graph from template array
+        /// </summary>
+        /// <param name="data">row is one edge with format "from, to, cost, startX, isBaseU"</param>
+        /// <param name="startX">startX</param>
+        /// <param name="baseU">baseU</param>
+        /// <remarks>indexing is started from 1, isBaseU should be 0 or 1</remarks>
+        /// <returns></returns>
+        public static Graph<int> CreateGraph(double[,] data, out Dictionary<Edge<int>, double> startX,
+            out List<Edge<int>> baseU)
+        {
+            var g = CreateGraph(data);
+
+            startX = new Dictionary<Edge<int>, double>(data.GetLength(0));
+            baseU = new List<Edge<int>>(data.GetLength(0));
+            for (int i = 0; i < data.GetLength(0); i++)
+            {
+                var edge = g.GetEdge((int)data[i, 0] - 1, (int)data[i, 1] - 1);
+                startX.Add(edge, data[i, 3]);
+                if ((int)data[i, 4] == 1)
+                {
+                    baseU.Add(edge);
+                }
+            }
+            return g;
+        }
+
+        /// <summary>
+        /// Creates graph from template array
+        /// </summary>
+        /// <param name="data">row is one edge with format "from, to, cost, expectedX"</param>
+        /// <param name="expectedX">expectedX</param>
+        /// <remarks>indexing is started from 1</remarks>
+        /// <returns></returns>
+        public static Graph<int> CreateGraph(double[,] data, out Dictionary<Edge<int>, double> expectedX)
+        {
+            var g = CreateGraph(data);
+
+            expectedX = new Dictionary<Edge<int>, double>(data.GetLength(0));
+            for (int i = 0; i < data.GetLength(0); i++)
+            {
+                var edge = g.GetEdge((int)data[i, 0] - 1, (int)data[i, 1] - 1);
+                expectedX.Add(edge, data[i, 3]);
+            }
+            return g;
+        }
+
+        /// <summary>
+        /// Creates graph from template array
+        /// </summary>
+        /// <param name="data">row is one edge with format "from, to, cost, startX, isBaseU, expectedX"</param>
+        /// <param name="startX">startX</param>
+        /// <param name="baseU">baseU</param>
+        /// <param name="expectedX">expectedX</param>
+        /// <remarks>indexing is started from 1, isBaseU should be 0 or 1</remarks>
+        /// <returns></returns>
+        public static Graph<int> CreateGraph(double[,] data, out Dictionary<Edge<int>, double> startX,
+            out List<Edge<int>> baseU, out Dictionary<Edge<int>, double> expectedX)
+        {
+            var g = CreateGraph(data, out startX, out baseU);
+            
+            expectedX = new Dictionary<Edge<int>, double>(data.GetLength(0));
+            for (int i = 0; i < data.GetLength(0); i++)
+            {
+                var edge = g.GetEdge((int)data[i, 0] - 1, (int)data[i, 1] - 1);
+                expectedX.Add(edge, data[i, 5]);
+            }
+            return g;
+        }
+
+        
+
+        #endregion Helper Methods
     }
 
     public static class GraphHelper
@@ -297,6 +519,26 @@ namespace IOpUtils
         public static IList<Edge<T>> BaseIncidentEdges<T>(this Vertex<T> v, List<Edge<T>> baseU)
         {
             return v.IncidentEdges.Where(baseU.Contains).ToList();
+        }
+
+        public static Graph<T> Clone<T>(this Graph<T> graph)
+        {
+            var res = new Graph<T>(graph.IsDirected);
+
+            foreach (var v in graph.Vertices)
+            {
+                var newV = new Vertex<T>(v.Data, v.Weight);
+                res.AddVertex(newV);
+            }
+
+            foreach (var e in graph.Edges)
+            {
+                var newE = new Edge<T>(res.GetVertex(e.FromVertex.Data), res.GetVertex(e.ToVertex.Data), e.Weight, true);
+                newE.Tag = e.Tag;
+                res.AddEdge(newE);
+            }
+
+            return res;
         }
     }
 }
