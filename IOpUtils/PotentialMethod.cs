@@ -16,6 +16,7 @@ namespace IOpUtils
         public List<Edge<int>> StartBaseU { get; set; }
         public Dictionary<Edge<int>, double> StartX { get; set; }
         public Dictionary<Edge<int>, double> ResultX { get; set; }
+        public double ResultCost { get; set; }
 
         public bool IsFirstPhaseNeeded { get; set; }
 
@@ -71,6 +72,7 @@ namespace IOpUtils
                 if (IsOptimal())
                 {
                     ResultX = new Dictionary<Edge<int>, double>(CurrX);
+                    ResultCost = ResultX.Sum(x => x.Key.Weight*x.Value);
                     return ResultX;
                 }
 
@@ -261,6 +263,17 @@ namespace IOpUtils
 
             CurrBaseU.Remove(ThetaEdge);
             CurrBaseU.Add(InoptimalEdge);
+        }
+
+        public string PrintX(Dictionary<Edge<int>, double> x)
+        {
+            var sb = new StringBuilder();
+            foreach (var pair in x)
+            {
+                sb.AppendFormat("{0} -> {1} : {2}\n", pair.Key.FromVertex.Data + 1,
+                                pair.Key.ToVertex.Data + 1, pair.Value);
+            }
+            return sb.ToString();
         }
     }
 
