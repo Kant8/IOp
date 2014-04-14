@@ -29,7 +29,7 @@ namespace IOpUtils.Tests
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
 
 
             var pm = new PotentialMethod(graph, startX, baseU);
@@ -70,7 +70,7 @@ namespace IOpUtils.Tests
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
 
             var pm = new PotentialMethod(graph, startX, baseU);
             var actualResult = pm.Solve();
@@ -101,7 +101,7 @@ namespace IOpUtils.Tests
                 {8, 7, 5, 0},
             };
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out expectedResult);
 
             List<int> production = new List<int>() {5, -5, -1, -6, -1, -6, 3, 11};
 
@@ -136,7 +136,7 @@ namespace IOpUtils.Tests
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
 
             var pm = new PotentialMethod(graph, startX, baseU);
             var actualResult = pm.Solve();
@@ -167,7 +167,7 @@ namespace IOpUtils.Tests
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
 
             var pm = new PotentialMethod(graph, startX, baseU);
             var actualResult = pm.Solve();
@@ -200,7 +200,7 @@ namespace IOpUtils.Tests
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
 
             var pm = new PotentialMethod(graph, startX, baseU);
             var actualResult = pm.Solve();
@@ -236,7 +236,7 @@ namespace IOpUtils.Tests
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
 
             var pm = new PotentialMethod(graph, startX, baseU);
             var actualResult = pm.Solve();
@@ -268,7 +268,7 @@ namespace IOpUtils.Tests
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
 
             var pm = new PotentialMethod(graph, startX, baseU);
             var actualResult = pm.Solve();
@@ -299,7 +299,7 @@ namespace IOpUtils.Tests
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
             Dictionary<Edge<int>, double> expectedResult;
-            var graph = PotentialMethod.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
 
             var pm = new PotentialMethod(graph, startX, baseU);
             var actualResult = pm.Solve();
