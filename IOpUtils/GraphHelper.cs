@@ -51,7 +51,7 @@ namespace IOpUtils
         }
         #endregion Extensions
 
-        #region Helper Methods
+        #region Print
 
         public static string PrintX(Dictionary<Edge<int>, double> x)
         {
@@ -74,11 +74,15 @@ namespace IOpUtils
             return sb.ToString();
         }
 
+        #endregion Print
+
+        #region Creators
+
         /// <summary>
         /// Creates graph from template array
         /// </summary>
-        /// <param name="data">row is one edge with format "from, to, cost"</param>
-        /// <remarks>indexing is started from 1</remarks>
+        /// <param name="data">row is one edge with format "from, to, weight"</param>
+        /// <remarks>indexing is started from 1, but in graph will be from 0</remarks>
         /// <returns>oriented graph</returns>
         public static Graph<int> CreateGraph(double[,] data)
         {
@@ -109,7 +113,7 @@ namespace IOpUtils
         /// <summary>
         /// Creates graph from template array
         /// </summary>
-        /// <param name="data">row is one edge with format "from, to, cost, startX, isBaseU"</param>
+        /// <param name="data">row is one edge with format "from, to, weight, startX, isBaseU"</param>
         /// <param name="startX">startX</param>
         /// <param name="baseU">baseU</param>
         /// <remarks>indexing is started from 1, isBaseU should be 0 or 1</remarks>
@@ -136,8 +140,8 @@ namespace IOpUtils
         /// <summary>
         /// Creates graph from template array
         /// </summary>
-        /// <param name="data">row is one edge with format "from, to, cost, expectedX"</param>
-        /// <param name="expectedX">expectedX</param>
+        /// <param name="data">row is one edge with format "from, to, weight, expectedX"</param>
+        /// <param name="expectedX">expectedX or startX</param>
         /// <remarks>indexing is started from 1</remarks>
         /// <returns></returns>
         public static Graph<int> CreateGraph(double[,] data, out Dictionary<Edge<int>, double> expectedX)
@@ -156,7 +160,7 @@ namespace IOpUtils
         /// <summary>
         /// Creates graph from template array
         /// </summary>
-        /// <param name="data">row is one edge with format "from, to, cost, startX, isBaseU, expectedX"</param>
+        /// <param name="data">row is one edge with format "from, to, weight, startX, isBaseU, expectedX"</param>
         /// <param name="startX">startX</param>
         /// <param name="baseU">baseU</param>
         /// <param name="expectedX">expectedX</param>
@@ -176,7 +180,6 @@ namespace IOpUtils
             return g;
         }
 
-        #endregion Helper Methods
+        #endregion Creators
     }
-
 }

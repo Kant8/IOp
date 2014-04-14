@@ -58,6 +58,7 @@
     <Compile Include="BranchAndBoundMethodTests.cs" />
     <Compile Include="DuplexMethodSolverTests.cs" />
     <Compile Include="DynamicMethodTests.cs" />
+    <Compile Include="FordFulkersonMethodTests.cs" />
     <Compile Include="GomoriMethodTests.cs" />
     <Compile Include="PotentialMethodTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
