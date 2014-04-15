@@ -7,7 +7,7 @@ namespace IOpUtils.Tests
     [TestFixture]
     public class FordFulkersonMethodTests
     {
-		[Tests]
+		[Test]
         public void FordFulkersonMethodTest00()
         {
             var data = new double[,]
