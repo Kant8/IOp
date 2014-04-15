@@ -7,6 +7,40 @@ namespace IOpUtils.Tests
     [TestFixture]
     public class FordFulkersonMethodTests
     {
+		[Tests]
+        public void FordFulkersonMethodTest00()
+        {
+            var data = new double[,]
+            {
+                {1, 2, 4, 4, 0, 4},
+                {1, 4, 9, 5, 0, 6},
+                {2, 4, 2, 2, 0, 1},
+                {2, 5, 4, 2, 0, 3},
+                {3, 5, 1, 1, 0, 0}, 
+                {3, 6, 10, 0, 0, 1},
+                {4, 3, 1, 1, 0, 1},
+                {4, 6, 6, 6, 0, 6},
+                {5, 6, 1, 1, 0, 1},
+                {5, 7, 2, 2, 0, 2},
+                {6, 7, 9, 7, 0, 8}
+            };
+            Dictionary<Edge<int>, double> startX;
+            List<Edge<int>> baseU;
+            Dictionary<Edge<int>, double> expectedResult;
+            var graph = GraphHelper.CreateGraph(data, out startX, out baseU, out expectedResult);
+            var startVertex = graph.GetVertex(0);
+            var endVertex = graph.GetVertex(graph.Vertices.Count - 1);
+            const double startCost = 9.0;
+
+
+            var ffm = new FordFulkersonMethod(graph, startVertex, endVertex, startX, startCost);
+            var actualResult = ffm.Solve();
+            var actualCost = ffm.ResultCost;
+
+            Assert.AreEqual(10, actualCost);
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
         [Test]
         public void FordFulkersonMethodTest01()
         {
