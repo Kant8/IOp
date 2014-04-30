@@ -184,7 +184,8 @@ namespace IOpUtils
             {
                 for (int j = 0; j < N; j++)
                 {
-                    TotalCost += Costs[i, j]*Assingment[i, j];
+                    if (Assingment[i, j] != 0)
+                        TotalCost += Costs[i, j]*Assingment[i, j];
                 }
             }
             return Assingment;
