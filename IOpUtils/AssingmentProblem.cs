@@ -14,7 +14,8 @@ namespace IOpUtils
         
         public DenseMatrix Costs { get; set; }
         public SparseMatrix Assingment {get; set; }
-        
+        public double TotalCost { get; set; }
+
         #endregion Public Properties
 
         #region Private Properties
@@ -175,6 +176,15 @@ namespace IOpUtils
                     int i = ex.Key.FromVertex.Data - 1;
                     int j = ex.Key.ToVertex.Data - N - 1;
                     Assingment[i, j] = 1;
+                }
+            }
+
+            TotalCost = 0;
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < N; j++)
+                {
+                    TotalCost += Costs[i, j]*Assingment[i, j];
                 }
             }
             return Assingment;
