@@ -105,7 +105,7 @@ namespace IOpUtils
             {
                 var from = g.GetVertex(vs[(int)data[i, 0]]);
                 var to = g.GetVertex(vs[(int)data[i, 1]]);
-                g.AddEdge(@from, to, data[i, 2]);
+                g.AddEdge(from, to, data[i, 2]);
             }
             return g;
         }

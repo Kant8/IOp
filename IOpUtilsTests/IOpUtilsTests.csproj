@@ -55,6 +55,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AssingmentProblemTests.cs" />
     <Compile Include="BranchAndBoundMethodTests.cs" />
     <Compile Include="DuplexMethodSolverTests.cs" />
     <Compile Include="DynamicMethodTests.cs" />

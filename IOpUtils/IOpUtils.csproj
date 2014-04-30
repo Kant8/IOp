@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssingmentProblem.cs" />
     <Compile Include="BranchAndBoundMethod.cs" />
     <Compile Include="DuplexMethodBoundsSolver.cs" />
     <Compile Include="DynamicMethod.cs" />

@@ -19,6 +19,7 @@ namespace IOpUtils
         public double StartCost { get; set; }
         public Dictionary<Edge<int>, double> ResultX { get; set; }
         public double ResultCost { get; set; }
+        public List<Vertex<int>> LastMarkedVerticies { get; set; }
 
         #endregion
 
@@ -82,6 +83,7 @@ namespace IOpUtils
                 {
                     ResultX = new Dictionary<Edge<int>, double>(CurrX);
                     ResultCost = CurrCost;
+                    LastMarkedVerticies = new List<Vertex<int>>(MarkedVerticies);
                     return ResultX;
                 }
 
