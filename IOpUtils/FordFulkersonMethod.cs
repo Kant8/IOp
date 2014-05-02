@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NGenerics.DataStructures.General;
 
 namespace IOpUtils
@@ -29,10 +27,6 @@ namespace IOpUtils
         private double CurrCost { get; set; }
 
         private List<Vertex<int>> MarkedVerticies { get; set; }
-        private List<Vertex<int>> UnwatchedVerticies
-        {
-            get { return S.Vertices.Except(MarkedVerticies).ToList(); }
-        }
         private int IterationIndex { get; set; }
         private int MarkedCount { get; set; }
         private Dictionary<Vertex<int>, Vertex<int>> PathFrom { get; set; }

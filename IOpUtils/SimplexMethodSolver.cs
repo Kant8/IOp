@@ -64,7 +64,7 @@ namespace IOpUtils
         #region Constructors
 
         public SimplexMethodSolver(DenseMatrix a, DenseVector b, DenseVector c,
-            DenseVector startX, List<int> startBaseJ, J0Strategy strategy = J0Strategy.Blend)
+            DenseVector startX, IEnumerable<int> startBaseJ, J0Strategy strategy = J0Strategy.Blend)
             : this(a, b, c, strategy)
         {
             this.StartX = DenseVector.OfVector(startX);
@@ -171,7 +171,7 @@ namespace IOpUtils
                 case J0Strategy.Blend:
                     Theta0 = thetas.Min();
                     ThetaIndex = thetas.Select((t, i) => new { t, i })
-                        .Where(theta => theta.t == Theta0)
+                        .Where(theta => Math.Abs(theta.t - Theta0) < Eps)
                         .OrderBy(ti => CurrBaseJ[ti.i])
                         .First().i;
                     break;

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathNet.Numerics.LinearAlgebra.Double;
-
-namespace IOpUtils
+﻿namespace IOpUtils
 {
     public class DynamicMethod
     {
@@ -33,12 +26,12 @@ namespace IOpUtils
 
         #region Constructors
 
-        public DynamicMethod(int[,] Fj, int c)
+        public DynamicMethod(int[,] fj, int c)
         {
-            this.F = (int[,]) Fj.Clone();
-            this.C = c;
-            ProductsCount = Fj.GetLength(0);
-            ResourcesCount = Fj.GetLength(1);
+            F = (int[,]) fj.Clone();
+            C = c;
+            ProductsCount = fj.GetLength(0);
+            ResourcesCount = fj.GetLength(1);
         }
 
         #endregion

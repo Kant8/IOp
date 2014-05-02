@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace IOpUtils
@@ -32,8 +30,6 @@ namespace IOpUtils
         private DenseVector CurrB { get; set; }
         private DenseVector CurrC { get; set; }
 
-        private bool IsFirstPhaseNeeded { get; set; }
-
         private int NonIntegerJ { get; set; }
 
         private List<int> J { get; set; }
@@ -54,7 +50,6 @@ namespace IOpUtils
             IntegerJ = new List<int>(integerJ);
             MeaningDecimals = 8;
             ResultMeaningDecimals = 4;
-            IsFirstPhaseNeeded = true;
         }
 
         #endregion
@@ -86,11 +81,8 @@ namespace IOpUtils
                     ResultX = (DenseVector)sms.ResultX.SubVector(0, J.Count);
                     return ResultX;
                 }
-                else
-                {
-                    //DeleteUnnecessaryRestrictions(sms);
-                    AddNewRestrictions(sms);
-                }
+                //DeleteUnnecessaryRestrictions(sms);
+                AddNewRestrictions(sms);
             }
         }
 
@@ -143,33 +135,33 @@ namespace IOpUtils
             
             var y = identity*baseA.Inverse();
 
-            var a = y * CurrA;
-            a = RoundVector((DenseVector)a, MeaningDecimals);
-            var f = a - DenseVector.OfEnumerable(a.Select(Math.Floor));
+            var alpha = y * CurrA;
+            alpha = RoundVector((DenseVector)alpha, MeaningDecimals);
+            var f = alpha - DenseVector.OfEnumerable(alpha.Select(Math.Floor));
             f = RoundVector((DenseVector)f, MeaningDecimals);
 
             //f = f - DenseVector.OfEnumerable(Enumerable.Repeat(Eps*2, f.Count));
 
-            var b = y * CurrB;
-            b = Math.Round(b, MeaningDecimals);
-            b = b - Math.Floor(b);
-            b = Math.Round(b, MeaningDecimals);
+            var beta = y * CurrB;
+            beta = Math.Round(beta, MeaningDecimals);
+            beta = beta - Math.Floor(beta);
+            beta = Math.Round(beta, MeaningDecimals);
 
 
-            InsertNewRestrictionRow((DenseVector)f, b);
-            FakeJ.Add(a.Count);
+            InsertNewRestrictionRow((DenseVector)f, beta);
+            FakeJ.Add(alpha.Count);
         }
 
-        private void InsertNewRestrictionRow(DenseVector f, double b)
+        private void InsertNewRestrictionRow(DenseVector insF, double insB)
         {
-            CurrA = (DenseMatrix) CurrA.InsertRow(CurrA.RowCount, -f); // TODO: test this
+            CurrA = (DenseMatrix) CurrA.InsertRow(CurrA.RowCount, -insF); // TODO: test this
             var newColumn = new DenseVector(CurrA.RowCount);
             newColumn[CurrA.RowCount - 1] = 1;
             CurrA = (DenseMatrix) CurrA.InsertColumn(CurrA.ColumnCount, newColumn); 
 
             var newB = new DenseVector(CurrB.Count + 1);
             newB.SetSubVector(0, CurrB.Count, CurrB);
-            newB[CurrB.Count] = -b;
+            newB[CurrB.Count] = -insB;
             CurrB = newB;
 
             var newC = new DenseVector(CurrC.Count + 1);
@@ -189,9 +181,9 @@ namespace IOpUtils
             sms.ResultCost = Math.Round(sms.ResultCost, ResultMeaningDecimals);
         }
 
-        private DenseMatrix GetBaseMatrix(DenseMatrix matrix, IEnumerable<int> baseJ)
+        private DenseMatrix GetBaseMatrix(DenseMatrix matrix, List<int> baseJ)
         {
-            var resM = new DenseMatrix(baseJ.Count());
+            var resM = new DenseMatrix(baseJ.Count);
             int i = 0;
             foreach (var j in baseJ)
             {

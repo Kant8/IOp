@@ -164,10 +164,10 @@ namespace IOpUtils.Tests
                 {1, 12, 2, 6, 19, 4, 13, 7, 0, Inf}
             });
 
-            var expectedResult = BuildExpectedResult((new[] { 1, 8, 4, 7, 5, 6, 9, 10, 3, 2, 1 }).ToList());
+            //var expectedResult = BuildExpectedResult((new[] { 1, 8, 4, 7, 5, 6, 9, 10, 3, 2, 1 }).ToList());
 
             var sp = new SalesmanProblem(costs);
-            var actualResult = sp.Solve();
+            /*var actualResult = */ sp.Solve();
             var actualCost = sp.OptimalCost;
 
             Assert.AreEqual(25, actualCost);

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra.Double;
 using NGenerics.DataStructures.General;
 
@@ -125,7 +123,7 @@ namespace IOpUtils
 
         private Graph<int> BuildFlowGraph(out Vertex<int> startVertex, out Vertex<int> endVertex)
         {
-            int startVertexIndex = 1;
+            const int startVertexIndex = 1;
             int endVertexIndex = 2 * N + 2;
 
             var edges = new List<double[]>();

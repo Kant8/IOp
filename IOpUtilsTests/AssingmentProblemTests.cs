@@ -226,20 +226,20 @@ namespace IOpUtils.Tests
                 {5, 6, 8, 0, 9, 9, 1, 9}
             });
 
-            var expectedResult = BuildExpectedResult(new[,]
-            {
-                {1, 2},
-                {2, 7},
-                {3, 6},
-                {4, 5},
-                {5, 1},
-                {6, 6},
-                {7, 3},
-                {8, 4}
-            });
+            //var expectedResult = BuildExpectedResult(new[,]
+            //{
+            //    {1, 2},
+            //    {2, 7},
+            //    {3, 6},
+            //    {4, 5},
+            //    {5, 1},
+            //    {6, 6},
+            //    {7, 3},
+            //    {8, 4}
+            //});
 
             var am = new AssingmentProblem(costs);
-            var actualResult = am.Solve();
+            /*var actualResult =*/ am.Solve();
             var actualCost = am.TotalCost;
 
             Assert.AreEqual(2, actualCost);
@@ -262,21 +262,21 @@ namespace IOpUtils.Tests
                 {3, 6, 0, 6, 3, 0, 9, 1, 2}
             });
 
-            var expectedResult = BuildExpectedResult(new[,]
-            {
-                {1, 4},
-                {2, 9},
-                {3, 3},
-                {4, 2},
-                {5, 5},
-                {6, 6},
-                {7, 1},
-                {8, 7},
-                {9, 8}
-            });
+            //var expectedResult = BuildExpectedResult(new[,]
+            //{
+            //    {1, 4},
+            //    {2, 9},
+            //    {3, 3},
+            //    {4, 2},
+            //    {5, 5},
+            //    {6, 6},
+            //    {7, 1},
+            //    {8, 7},
+            //    {9, 8}
+            //});
 
             var am = new AssingmentProblem(costs);
-            var actualResult = am.Solve();
+            /*var actualResult =*/ am.Solve();
             var actualCost = am.TotalCost;
 
             Assert.AreEqual(-2, actualCost);

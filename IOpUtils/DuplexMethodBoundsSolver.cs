@@ -153,12 +153,12 @@ namespace IOpUtils
                 Kappas[j] = dUpper[j];
             }
 
-            DenseVector AjKappaJSumm = new DenseVector(A.RowCount);
+            DenseVector ajKappaJSumm = new DenseVector(A.RowCount);
             foreach (var j in CurrNonBaseJ)
             {
-                AjKappaJSumm += (DenseVector) A.Column(j)*Kappas[j];
+                ajKappaJSumm += (DenseVector) A.Column(j)*Kappas[j];
             }
-            DenseVector nonBaseKappa = InvBaseA*(b - AjKappaJSumm);
+            DenseVector nonBaseKappa = InvBaseA*(b - ajKappaJSumm);
 
             int i = 0;
             foreach (var j in CurrBaseJ)

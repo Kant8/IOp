@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NGenerics.DataStructures.General;
 
 namespace IOpUtils
@@ -299,7 +296,7 @@ namespace IOpUtils
             NegativeLoop = negLoop;
         }
 
-        private List<Edge<int>> GetLoop(List<Edge<int>> edges)
+        private List<Edge<int>> GetLoop(IEnumerable<Edge<int>> edges)
         {
             var loop = new List<Edge<int>>(edges);
             var nextLoop = new List<Edge<int>>(loop);

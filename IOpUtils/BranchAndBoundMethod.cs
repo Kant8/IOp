@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace IOpUtils
@@ -32,8 +30,6 @@ namespace IOpUtils
 
         #region Private Properties
 
-        private bool IsFirstPhaseNeeded { get; set; }
-
         private Stack<BAndBTask> Tasks { get; set; }
 
         private int NonIntegerJ { get; set; }
@@ -61,17 +57,6 @@ namespace IOpUtils
             StartRecord = startRecord;
             MeaningDecimals = 8;
             HasResult = false;
-            IsFirstPhaseNeeded = true;
-        }
-
-        public BranchAndBoundMethod(DenseMatrix a, DenseVector b, DenseVector c,
-            DenseVector dLower, DenseVector dUpper, IEnumerable<int> integerJ,
-            double startRecord, DenseVector startX, IEnumerable<int> startBaseJ)
-            : this(a, b, c, dLower, dUpper, integerJ, startRecord)
-        {
-            StartBaseJ = new List<int>(startBaseJ);
-            StartX = DenseVector.OfVector(startX);
-            IsFirstPhaseNeeded = false;
         }
 
         #endregion

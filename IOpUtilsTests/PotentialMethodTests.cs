@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IOpUtils;
+﻿using System.Collections.Generic;
 using NGenerics.DataStructures.General;
 using NUnit.Framework;
 namespace IOpUtils.Tests
 {
-    [TestFixture()]
+    [TestFixture]
     public class PotentialMethodTests
     {
-        [Test()]
+        [Test]
         public void PotentialMethodTest0()
         {
             var data = new double[,]
@@ -45,7 +40,7 @@ namespace IOpUtils.Tests
             //}
         }
 
-        [Test()]
+        [Test]
         public void PotentialMethodTest1()
         {
             var data = new double[,]
@@ -80,7 +75,7 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [Test()]
+        [Test]
         public void PotentialMethodTest2()
         {
             var data = new double[,]
@@ -98,12 +93,12 @@ namespace IOpUtils.Tests
                 {7, 5, 6, 2},
                 {7, 6, 2, 0},
                 {8, 6, 5, 11},
-                {8, 7, 5, 0},
+                {8, 7, 5, 0}
             };
             Dictionary<Edge<int>, double> expectedResult;
             var graph = GraphHelper.CreateGraph(data, out expectedResult);
 
-            List<int> production = new List<int>() {5, -5, -1, -6, -1, -6, 3, 11};
+            List<int> production = new List<int> {5, -5, -1, -6, -1, -6, 3, 11};
 
             var pm = new PotentialMethod(graph, production);
             var actualResult = pm.Solve();
@@ -113,7 +108,7 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [Test()]
+        [Test]
         public void PotentialMethodTest3()
         {
             var data = new double[,]
@@ -131,7 +126,7 @@ namespace IOpUtils.Tests
                 {7, 5, 1, 0, 0, 7},
                 {7, 6, 7, 3, 1, 0},
                 {8, 6, -1, 0, 0, 0},
-                {8, 7, 1, 0, 0, 3},
+                {8, 7, 1, 0, 0, 3}
             };
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
@@ -146,7 +141,7 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [Test()]
+        [Test]
         public void PotentialMethodTest4()
         {
             var data = new double[,]
@@ -162,7 +157,7 @@ namespace IOpUtils.Tests
                 {5, 6, 2, 0, 0, 8},
                 {6, 4, 1, 0, 0, 7},
                 {7, 5, 8, 2, 1, 0},
-                {7, 6, 6, 5, 1, 4},
+                {7, 6, 6, 5, 1, 4}
             };
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
@@ -177,7 +172,7 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [Test()]
+        [Test]
         public void PotentialMethodTest5()
         {
             var data = new double[,]
@@ -210,7 +205,7 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [Test()]
+        [Test]
         public void PotentialMethodTest6()
         {
             var data = new double[,]
@@ -246,7 +241,7 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [Test()]
+        [Test]
         public void PotentialMethodTest7()
         {
             var data = new double[,]
@@ -263,7 +258,7 @@ namespace IOpUtils.Tests
                 {5, 6, -1, 0, 0, 0},
                 {6, 7, 4, 2, 1, 2},
                 {7, 1, 2, 0, 0, 5},
-                {7, 5, 7, 5, 1, 0},
+                {7, 5, 7, 5, 1, 0}
             };
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;
@@ -278,7 +273,7 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [Test()]
+        [Test]
         public void PotentialMethodTest8()
         {
             var data = new double[,]
@@ -294,7 +289,7 @@ namespace IOpUtils.Tests
                 {3, 5, 2, 0, 0, 0},
                 {4, 5, 3, 0, 0, 0},
                 {6, 4, 2, 0, 0, 5},
-                {6, 5, 4, 3, 1, 0},
+                {6, 5, 4, 3, 1, 0}
             };
             Dictionary<Edge<int>, double> startX;
             List<Edge<int>> baseU;

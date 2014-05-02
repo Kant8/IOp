@@ -104,7 +104,7 @@ namespace IOpUtils.Tests
 
 
             var ffm = new FordFulkersonMethod(graph, startVertex, endVertex);
-            var actualResult = ffm.Solve();
+            /*var actualResult = */ffm.Solve();
             var actualCost = ffm.ResultCost;
 
             Assert.AreEqual(10, actualCost);
@@ -142,7 +142,7 @@ namespace IOpUtils.Tests
 
 
             var ffm = new FordFulkersonMethod(graph, startVertex, endVertex);
-            var actualResult = ffm.Solve();
+            /*var actualResult = */ffm.Solve();
             var actualCost = ffm.ResultCost;
 
             Assert.AreEqual(13, actualCost);
@@ -182,7 +182,7 @@ namespace IOpUtils.Tests
 
 
             var ffm = new FordFulkersonMethod(graph, startVertex, endVertex);
-            var actualResult = ffm.Solve();
+            /*var actualResult = */ffm.Solve();
             var actualCost = ffm.ResultCost;
 
             Assert.AreEqual(5, actualCost); 
@@ -218,7 +218,7 @@ namespace IOpUtils.Tests
 
 
             var ffm = new FordFulkersonMethod(graph, startVertex, endVertex);
-            var actualResult = ffm.Solve();
+            /*var actualResult = */ffm.Solve();
             var actualCost = ffm.ResultCost;
 
             Assert.AreEqual(8, actualCost);
@@ -258,7 +258,7 @@ namespace IOpUtils.Tests
 
 
             var ffm = new FordFulkersonMethod(graph, startVertex, endVertex);
-            var actualResult = ffm.Solve();
+            /*var actualResult = */ffm.Solve();
             var actualCost = ffm.ResultCost;
 
             Assert.AreEqual(6, actualCost);
@@ -296,7 +296,7 @@ namespace IOpUtils.Tests
 
 
             var ffm = new FordFulkersonMethod(graph, startVertex, endVertex);
-            var actualResult = ffm.Solve();
+            /*var actualResult = */ffm.Solve();
             var actualCost = ffm.ResultCost;
 
             Assert.AreEqual(5, actualCost);
@@ -376,7 +376,7 @@ namespace IOpUtils.Tests
 
 
             var ffm = new FordFulkersonMethod(graph, startVertex, endVertex);
-            var actualResult = ffm.Solve();
+            /*var actualResult = */ffm.Solve();
             var actualCost = ffm.ResultCost;
 
             Assert.AreEqual(9, actualCost);
