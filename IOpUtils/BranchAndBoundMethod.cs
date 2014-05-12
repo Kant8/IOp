@@ -44,6 +44,7 @@ namespace IOpUtils
 
         #region Constructors
 
+        public int IterationCount;
         public BranchAndBoundMethod(DenseMatrix a, DenseVector b, DenseVector c,
             DenseVector dLower, DenseVector dUpper, IEnumerable<int> integerJ,
             double startRecord)
@@ -110,9 +111,10 @@ namespace IOpUtils
             RecordCost = StartRecord;
             Tasks = new Stack<BAndBTask>();
             Tasks.Push(new BAndBTask(dLower, dUpper));
-
+            IterationCount = 0;
             while (Tasks.Any())
             {
+                IterationCount++;
                 var task = Tasks.Pop();
                 var dms = new DuplexMethodBoundsSolver(A, b, c, task.LowerBound, task.UpperBound,
                     task.StartX, task.StartBaseJ);

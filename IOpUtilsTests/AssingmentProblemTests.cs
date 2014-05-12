@@ -318,6 +318,31 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
+        [Test]
+        public void AssingmentProblemTestZACH()
+        {
+            DenseMatrix costs = DenseMatrix.OfArray(new double[,]
+            {
+                {2, -1, 9, 4},
+                {3, 2, 5, 1},
+                {13, 0, -3, 4},
+                {5, 6, 1, 2}
+            });
+
+            var expectedResult = BuildExpectedResult(new int[,]
+            {
+                {1, 2},
+                {2, 1},
+                {3, 3},
+                {4, 4}
+            });
+
+            var am = new AssingmentProblem(costs);
+            var actualResult = am.Solve();
+
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
         private SparseMatrix BuildExpectedResult(int[,] data)
         {
             int n = data.GetLength(0);

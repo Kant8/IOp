@@ -45,5 +45,27 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
             Assert.AreEqual(543, gm.ResultCost);
         }
+
+        [Test]
+        public void GomoriMethodTestZACH()
+        {
+            DenseMatrix a = DenseMatrix.OfArray(new double[,]
+                                                {
+                                                    { 2, -1, 4, -5, 0, -2, 1, 1 },
+                                                    { 0, 1, -1, 3, 1, 2, 0, -1 },
+                                                    { 1, 1, 2, 2, 1, 0, 4, 3 },
+                                                });
+            DenseVector b = new DenseVector(new double[] { 0, 5, 4 });
+            DenseVector c = new DenseVector(new double[] { 2, 4, 3, -1, 1, 2, 6, -5 });
+
+            DenseVector expectedResult = new DenseVector(new double[] { 0, 0, 15, 6, 0 });
+
+            var gm = new GomoriMethod(a, b, -c, Enumerable.Range(0, a.ColumnCount));
+            var actualResult = gm.Solve();
+            Assert.AreEqual(expectedResult, actualResult);
+            Assert.AreEqual(0, gm.ResultCost);
+        }
+        
+            
     }
 }

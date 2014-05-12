@@ -287,6 +287,28 @@ namespace IOpUtils.Tests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
+        [Test]
+        public void SalesmanProblemTestZACH()
+        {
+            var costs = DenseMatrix.OfArray(new[,]
+            {
+                {Inf, 2, 3, 1, 4},
+                {1, Inf, 2, 1, 3},
+                {Inf, 1, Inf, 1, 1},
+                {1, 2, 10, Inf, 3},
+                {1, 2, Inf, 4, Inf}
+            });
+
+            var expectedResult = BuildExpectedResult((new[] { 3, 1, 2, 4, 5, 3 }).ToList());
+
+            var sp = new SalesmanProblem(costs);//, 26, new List<int> { 0, 1, 2, 3, 4, 0 });
+            var actualResult = sp.Solve();
+            var actualCost = sp.OptimalCost;
+
+            Assert.AreEqual(12, actualCost);
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
         private SparseMatrix BuildExpectedResult(List<int> points)
         {
             var res = new SparseMatrix(points.Count - 1);
